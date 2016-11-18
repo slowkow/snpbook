@@ -108,6 +108,11 @@ function updateLD(response, obj) {
     var ld = geno.map(function(y) {
       return compute_ld(geno[idx], y)
     })
+
+    var dist = rows.map(function(x) {
+      return Math.abs(rows[idx][1] - x[1])
+    })
+
     // // Compute D' (D prime).
     // var dp = geno.map(function(y) { 
     //   return dprime(geno[idx], y)
@@ -124,6 +129,7 @@ function updateLD(response, obj) {
 
     for (var i = 0; i < data.markers.length; i++) {
       data.markers[i] = {
+        'dist': dist[i],
         'r2': ld[i].r2,
         'dp': ld[i].dp,
         'maf': maf[i],
@@ -301,7 +307,7 @@ function plotLD(target_id) {
     d3.select("#main-table")
         .append("div")
         .attr("id", "marker-count")
-        .text(d3.format(",")(data.markers.length) + " markers in this region")
+        .text(d3.format(",")(data.markers.length) + " variants in this region")
 
     // Remove the old table.
     d3.select("#marker-table").remove()
@@ -314,7 +320,7 @@ function plotLD(target_id) {
     var thead = table.append("thead"),
         tbody = table.append("tbody")
 
-    var columns = ['chrom', 'pos', 'rsid', 'ref', 'alt', 'maf', 'r2', 'dp']
+    var columns = ['chrom', 'pos', 'rsid', 'ref', 'alt', 'maf', 'dist', 'r2', 'dp']
 
     // append the header row
     thead.append("tr")
@@ -326,7 +332,7 @@ function plotLD(target_id) {
 
     var sort_markers = function(a, b) {
         var x = b.r2 - a.r2
-        return x == 0 ? a.pos - b.pos : x
+        return x == 0 ? a.dist - b.dist : x
     }
 
     // create a row for each object in the data
