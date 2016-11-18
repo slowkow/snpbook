@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>snpbook</title>
+  <meta name="description" content="SNP data browser">
+  <meta name="author" content="Kamil Slowikowski">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!-- <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"> -->
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <style>
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .dot {
+    stroke: #000;
+  }
+
+  .tooltip {
+    background-color: white;
+    position: absolute;
+    pointer-events: none;
+  }
+  </style>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <h1>snpbook</h1>
+    </div>
+
+    <div class="row">
+      <div id="main-plot"></div>
+    </div>
+
+    <div class="row">
+      <div id="loading-text"></div>
+
+      <div id="main-plot-parameters">
+
+        <label for="region">Region:</label>
+        <input id="region" type="text" value="6:550000-650000" maxlength="48" size="32">
+
+        <button class="button-primary" id="region-button">GO</button>
+
+        <button id="region-left"><i class="fa fa-arrow-left fa-2x"></i></button>
+        <button id="region-right"><i class="fa fa-arrow-right fa-2x"></i></button>
+
+        <button><i class="fa fa-area-chart fa-2x"></i></button>
+        <button><i class="fa fa-globe fa-2x"></i></button>
+
+      </div>
+    </div>
+
+    <div id="main-table"></div>
+
+    </div>
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+<script src="js/interval-tree.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/snpbook.d3.js"></script>
+
+<script>
+
+// Choose a random region within the first 1,000,000 bp of a chromosome.
+var region = document.getElementById('region')
+
+var chroms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,'X']
+var start = Math.floor(Math.random() * 1e6)
+var end = start + 100000
+var cf = d3.format(',')
+
+// region.value = shuffle(chroms)[0] + ':' + cf(start) + '-' + cf(end)
+region.value = '11:847,482-947,482'
+
+// plotQuery depends on the global called 'data'.
+var data = {
+  markers: []
+}
+
+plotQuery(region.value)
+
+d3.select('#region').on('keyup', function() {
+  if (d3.event.keyCode === 13) {
+    plotQuery(region.value)
+  }
+})
+
+d3.select("#region-button").on("click", function() {
+  plotQuery(region.value)
+})
+
+d3.select("#region-left").on("click", function() {
+  //var el = document.getElementById('region')
+  var obj = parseRegion(region.value)
+  obj.start = +obj.start - 50000
+  obj.end = +obj.end - 50000
+  region.value = toRegion(obj.chrom, obj.start, obj.end)
+})
+
+d3.select("#region-right").on("click", function() {
+  //var el = document.getElementById('region')
+  var obj = parseRegion(region.value)
+  obj.start = +obj.start + 50000
+  obj.end = +obj.end + 50000
+  region.value = toRegion(obj.chrom, obj.start, obj.end)
+})
+
+</script>
+
+</html>
