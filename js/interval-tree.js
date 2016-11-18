@@ -1,3 +1,5 @@
+// https://github.com/mgechev/javascript-algorithms/blob/master/src/data-structures/interval-tree.js
+
 /**
  * Interval tree is an ordered tree data structure to hold intervals.
  *
