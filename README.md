@@ -10,6 +10,8 @@ file hosted on the [BEAGLE] website.
 
 All done in the web browser with Javascript!
 
+Try it: <https://slowkow.github.io/snpbook/>
+
 [d3]: https://github.com/d3/d3
 [tabix]: https://github.com/samtools/tabix
 [iobio]: http://iobio.io/
