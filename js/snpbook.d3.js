@@ -44,7 +44,7 @@ function myVariant(query) {
   //
   // var data_url = "http://tabix.iobio.io/?cmd=-h%20%27http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/individual_chromosomes/chr2.1kg.phase3.v5a.vcf.gz%27%202:4000000-4050000"
 
-  var data_url = 'http://myvariant.info/v1/query?q=' +
+  var data_url = 'https://myvariant.info/v1/query?q=' +
     query + '&fields=dbsnp.hg19,dbsnp.rsid,dbsnp.chrom,dbsnp.alt,dbsnp.ref'
 
   d3.json(data_url, function(err, json) {
@@ -146,7 +146,7 @@ function updateLD(response, obj) {
 }
 
 function updateGenes(obj, callback) {
-  var data_url = 'http://mygene.info/v2/query?q=' +
+  var data_url = 'https://mygene.info/v2/query?q=' +
     'chr' + obj.chrom + ':' + obj.start + '-' + obj.end +
     '&fields=genomic_pos,symbol,name,type_of_gene'
     
@@ -567,7 +567,7 @@ function dataURL(chrom, start, end, limit) {
   // var host_url = 'http://s3.amazonaws.com/1000genomes/release/20101123/interim_phase1_release/'
   // var filename = `ALL.chr${chrom}.phase1.projectConsensus.genotypes.vcf.gz`
   var region = `${chrom}:${start}-${end}`
-  var tabix_url = `http://tabix.iobio.io/?cmd=-h%20%27${host_url}${filename}%27%20${region}`
+  var tabix_url = `https://tabix.iobio.io/?cmd=-h%20%27${host_url}${filename}%27%20${region}`
   return tabix_url
 }
 
