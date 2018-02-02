@@ -13,7 +13,8 @@ function update(obj) {
   console.log("[update]")
   console.log(obj)
 
-  var limit = -1
+  //var limit = -1
+  var limit = 100
 
   var target_id = '#main-plot'
 
@@ -22,8 +23,10 @@ function update(obj) {
 
   d3.select("#loading-text").text("Loading...")
 
+  console.log("downloading genotypes...")
   d3.xhr(data_url, "text/plain", function (err, response) {
 
+    console.log("calculating and plotting...")
     updateLD(response, obj)
     plotLD(target_id)
 
@@ -73,14 +76,12 @@ function myVariant(query) {
 
 // Fills a global called 'data.markers'.
 function updateLD(response, obj) {
-    // Convert text to array of lines.
-    var lines = response.responseText.split('\n')
-
-    // The first five lines are a VCF header.
-    var header = lines.slice(0, 5)
-
-    // The following lines are data lines.
-    var rows = d3.tsv.parseRows(lines.slice(5).join('\n'))
+    // Exclude the header lines.
+    var rows = d3.tsv.parseRows(
+      response.responseText.split('\n').filter(
+        function(x) { return x[0] != "#" }
+      ).join('\n')
+    )
 
     // Discard multi-allelic markers.
     rows = rows.filter(function(x) { return x[4].indexOf(',') == -1 })
@@ -553,12 +554,21 @@ function plotGenes(target_id) {
 
 // Return a URL to the 1000 Genomes data hosted at Broad Institute.
 function dataURL(chrom, start, end, limit) {
-  return 'https://data.broadinstitute.org/srlab/BEAGLE/1000_Genomes_phase3_v5a/chr' +
-    chrom + '.1kg.phase3.v5a.vcf.gz?' + encodeData({
-      format: 'text',
-      limit: limit,
-      region: chrom + ':' + start + '-' + end
-    })
+  //return 'https://data.broadinstitute.org/srlab/BEAGLE/1000_Genomes_phase3_v5a/chr' +
+  //  chrom + '.1kg.phase3.v5a.vcf.gz?' + encodeData({
+  //    format: 'text',
+  //    limit: limit,
+  //    region: `${chrom}:${start}-${end}`
+  //  })
+  // BEAGLE webserver
+  var host_url = 'http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/individual_chromosomes/'
+  var filename = `chr${chrom}.1kg.phase3.v5a.vcf.gz`
+  // Amazon AWS
+  // var host_url = 'http://s3.amazonaws.com/1000genomes/release/20101123/interim_phase1_release/'
+  // var filename = `ALL.chr${chrom}.phase1.projectConsensus.genotypes.vcf.gz`
+  var region = `${chrom}:${start}-${end}`
+  var tabix_url = `http://tabix.iobio.io/?cmd=-h%20%27${host_url}${filename}%27%20${region}`
+  return tabix_url
 }
 
 // Return the genotypes in a VCF row:
