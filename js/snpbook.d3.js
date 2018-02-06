@@ -598,6 +598,13 @@ function dot(x, y) {
   return sum
 }
 
+// x is a vector of genotypes
+// y is a vector of genotypes
+// Encoding is 0 for reference, 1 for alternate.
+// Each person has 2 alleles.
+// For example, here is a vector for 3 people:
+//    [0, 0, 0, 1, 1, 1]
+// The first person is homozygous for the reference allele.
 function compute_ld(x, y) {
   var retval = {r2: 0, dp: 0}
   // These computations are used for both r2 and dp.
