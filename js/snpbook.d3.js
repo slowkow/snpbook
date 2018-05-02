@@ -42,7 +42,7 @@ function myVariant(query) {
   // 1. Use the iobio service.
   // 2. Handle other VCF files like ExAC.
   //
-  // var data_url = "http://tabix.iobio.io/?cmd=-h%20%27http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/individual_chromosomes/chr2.1kg.phase3.v5a.vcf.gz%27%202:4000000-4050000"
+  // var data_url = "http://tabix.iobio.io/?cmd=-h%20%27http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/vcf.b37/chr2.1kg.phase3.v5a.vcf.gz%27%202:4000000-4050000"
 
   var data_url = 'https://myvariant.info/v1/query?q=' +
     query + '&fields=dbsnp.hg19,dbsnp.rsid,dbsnp.chrom,dbsnp.alt,dbsnp.ref'
@@ -561,7 +561,7 @@ function dataURL(chrom, start, end, limit) {
   //    region: `${chrom}:${start}-${end}`
   //  })
   // BEAGLE webserver
-  var host_url = 'http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/individual_chromosomes/'
+  var host_url = 'http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/vcf.b37/'
   var filename = `chr${chrom}.1kg.phase3.v5a.vcf.gz`
   // Amazon AWS
   // var host_url = 'http://s3.amazonaws.com/1000genomes/release/20101123/interim_phase1_release/'
