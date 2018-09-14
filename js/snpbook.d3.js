@@ -561,7 +561,7 @@ function dataURL(chrom, start, end, limit) {
   //    region: `${chrom}:${start}-${end}`
   //  })
   // BEAGLE webserver
-  var host_url = 'http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/vcf.b37/'
+  var host_url = 'http://bochet.gcc.biostat.washington.edu/beagle/1000_Genomes_phase3_v5a/b37.vcf/'
   var filename = `chr${chrom}.1kg.phase3.v5a.vcf.gz`
   // Amazon AWS
   // var host_url = 'http://s3.amazonaws.com/1000genomes/release/20101123/interim_phase1_release/'
